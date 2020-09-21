@@ -1,6 +1,7 @@
 import pygame
 import sys
 from .gameOver import GameOver
+from .scorebanner import ScoreBanner
 
 sys.path.append("..\\controller\\")
 
@@ -40,6 +41,7 @@ class SnakeInterface:
         # Setting the game's title.
         pygame.display.set_caption("Snake Game")
         self.generateGrid(self.surface, width, height)
+        self.scoreBanner = ScoreBanner(self, controller, (0, 0, 0), (255, 255, 255), self.width - 2, self.blockSize * 2)
         # Useful when the user looses.
         self.gameOver = None
 
@@ -53,6 +55,17 @@ class SnakeInterface:
             The surface of the game.
         """
         return self.surface
+
+    def getBannerHeight(self):
+        """
+        Score banner height getter.
+
+        Returns
+        -------
+        int
+            The height of the score banner.
+        """
+        return self.scoreBanner.getBannerHeight()
 
     def setGameOver(self, gameOver):
         """
@@ -147,7 +160,7 @@ class SnakeInterface:
         ----------
         color : tuple of int
             The color used to fill the surface.
-        rectObject : pygame.Rect, optional
+        rectObject : pygame.Rect or tuple of int or tuple of float, optional
             If passed, the rectangle will be filled with the color instead of the entire surface.
 
         Returns
@@ -174,6 +187,21 @@ class SnakeInterface:
         None
         """
         self.surface.blit(source, destination)
+
+    def updateScoreBanner(self, score):
+        """
+        Calls the Score view in order to update the score banner displayed on the main surfac.
+
+        Parameters
+        ----------
+        score : int
+            The current score.
+
+        Returns
+        -------
+        None
+        """
+        self.scoreBanner.updateScoreBanner(score)
 
     def callGameOver(self, head, eye1, eye2, score, bestScore):
         """

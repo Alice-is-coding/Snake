@@ -1,5 +1,5 @@
 import pygame
-
+from view.tools import Tools
 
 class GameOver:
     """
@@ -99,7 +99,6 @@ class GameOver:
         height = self.controller.getHeight()
         isOnPlayAgain = False
 
-        #if width // 12.5 <= posX <= width // 12.5 + 180 and height // 1.26 <= posY <= height // 1.26 + 45:
         if width // 11.4 <= posX <= width // 11.4 + width // 2.87 and height // 1.26 <= posY <= height // 1.26 + height // 11:
             isOnPlayAgain = True
         return isOnPlayAgain
@@ -125,7 +124,6 @@ class GameOver:
         height = self.controller.getHeight()
         isOnQuit = False
 
-        #if width // 1.78 <= posX <= width // 1.78 + 180 and height // 1.26 <= posY <= height // 1.26 + 45:
         if width // 1.758 <= posX <= width // 1.758 + width // 2.87 and height // 1.26 <= posY <= height // 1.26 + height // 11:
             isOnQuit = True
         return isOnQuit
@@ -168,42 +166,13 @@ class GameOver:
 
             # Showing some info : "Game Over" ; "Score" ; 2 buttons ("Play Again" ; "Quit").
             """*****GAME OVER*****"""
-            self.createMessage(self.fontType, width // 10, self.texts[0], (251, 244, 5), width // 2, height // 3,
-                               (0, 0, 0), True)
+            Tools.createMessage(self.snakeInterface.getSurface(), self.fontType, width // 10, self.texts[0],
+                                (251, 244, 5), width // 2, height // 3,
+                                (0, 0, 0), True)
             """*****SCORE*****"""
             self.createScoreMessage(width, height, score, bestScore)
             """*****BUTTONS*****"""
             self.createGameOverButtons(width, height)
-
-    def showTextOnInterface(self, text, rect=None, destination=None, posX=None, posY=None, center=False):
-        """
-        Displays some text on the main interface.
-
-        Parameters
-        ----------
-        text : pygame.Surface
-            The text to be displayed on the main surface.
-        rect : pygame.Surface, optional
-            The surface containing the text.
-        destination : pygame.Surface, optional
-            The surface on which the text is to be drawn.
-        posX : int, optional
-            The pos x of the Rect object.
-        posY : int, optional
-            The pos y of the Rect object.
-        center : bool, optional
-            If True: the Rect object should be drawn at the center of the surface given its posX and posY.
-
-        Returns
-        -------
-        None
-        """
-        if center is True and rect is not None and posX is not None and posY is not None:
-            rect.center = (posX, posY)
-        if destination is not None:
-            self.snakeInterface.blit(text, destination)
-        else:
-            self.snakeInterface.blit(text, rect)
 
     def showButton(self, color, rect, lineRect, text, textPos):
         """
@@ -215,6 +184,8 @@ class GameOver:
             The main color of the button.
         rect : pygame.Rect
             The main rect of the button.
+        lineRect : pygame.Rect
+            The line around the main button rectangle.
         text : pygame.Surface
             The text to be drawn.
         textPos : int or float or tuple of int or tuple of float
@@ -227,72 +198,7 @@ class GameOver:
         # Filling the rect with the color, then displaying the text on the surface at a certain pos.
         self.snakeInterface.fillSurface((255, 255, 255), lineRect)
         self.snakeInterface.fillSurface(color, rect)
-        self.showTextOnInterface(text, None, textPos)
-
-    def createMessage(self, fontType, fontSize, message, color, posX, posY, background=None, center=False,
-                      smoothEdges=False, destination=None):
-        """
-        Creates a message and displays it.
-
-        Parameters
-        ----------
-        fontType : str
-            The font type (filename)(relative path).
-        fontSize : int
-            The font size.
-        message : str
-            The message to be created and displayed.
-        color : tuple of int
-            The color of the message.
-        posX : int or float
-            The position x of the message.
-        posY : int or float
-            The position y of the message.
-        background : tuple of int, optional
-            The background color of the message.
-        center : bool
-            If True: the Rect object should be drawn at the center of the surface given its posX and posY.
-        smoothEdges : bool, optional
-            If True, the edges of the message will be visually smooth.
-        destination : pygame.Surface, optional
-            The surface on which the message should be drawn.
-
-        Returns
-        -------
-        None
-        """
-        message_text = self.createText(fontType, fontSize, message, color, smoothEdges, background)
-        message_rect = message_text.get_rect()
-        self.showTextOnInterface(message_text, message_rect, destination, posX, posY, center)
-
-    def createText(self, fontType, fontSize, text, color, smoothEdges=False, background=None):
-        """
-        Creates a Surface with some text given in param.
-
-        Parameters
-        ----------
-        fontType : str
-            The filename of the font chosen.
-        fontSize : int
-            The font size.
-        text : str
-            The text to be rendered according to a font.
-        color : tuple of int
-            The text color.
-        smoothEdges : bool
-            (Optional) If True, the text will be displayed with smooth edges.
-        background : tuple of int
-            (Optional) Background color.
-
-        Returns
-        -------
-        pygame.Surface
-            The new Surface created with the specified text rendered on it.
-        """
-        font = pygame.font.Font(fontType, fontSize)
-        theText = font.render(text, smoothEdges, color, background)
-
-        return theText
+        Tools.showTextOnInterface(self.snakeInterface.getSurface(), text, None, textPos)
 
     def createScoreMessage(self, width, height, score, bestScore=None):
         """
@@ -313,17 +219,20 @@ class GameOver:
         -------
         None
         """
+        # Declarations.
+        mainSurface = self.snakeInterface.getSurface()
+
         # If there's a new best score:
         if bestScore is not None:
             # We congratulate the user.
-            self.createMessage(self.fontType, int(width // 16.6), self.texts[4], (252, 178, 5), width // 2,
-                               height // 1.9, (0, 0, 0), True)
-            self.createMessage(self.fontType, int(width // 16.6), self.texts[5] + str(score), (252, 178, 5), width // 2,
-                               height // 1.7, (0, 0, 0), True)
+            Tools.createMessage(mainSurface, self.fontType, int(width // 16.6), self.texts[4], (252, 178, 5),
+                                width // 2, height // 1.9, (0, 0, 0), True)
+            Tools.createMessage(mainSurface, self.fontType, int(width // 16.6), self.texts[5] + str(score),
+                                (252, 178, 5), width // 2, height // 1.7, (0, 0, 0), True)
         else:
             # Otherwise, we only show the current score.
-            self.createMessage(self.fontType, int(width // 12.5), self.texts[1] + str(score), (252, 178, 5), width // 2,
-                               height // 1.8, (0, 0, 0), True)
+            Tools.createMessage(mainSurface, self.fontType, int(width // 12.5), self.texts[1] + str(score),
+                                (252, 178, 5), width // 2, height // 1.8, (0, 0, 0), True)
 
     def createGameOverButtons(self, width, height):
         """
@@ -341,28 +250,28 @@ class GameOver:
         None
         """
         # Declaration.
-        surface = self.snakeInterface.getSurface()
+        mainSurface = self.snakeInterface.getSurface()
 
         '''*****BUTTON1*****'''
         # Creating.
-        button1_text = self.createText(self.fontType, width // 25, self.texts[2], (255, 255, 255))
+        button1_text = Tools.createText(self.fontType, width // 25, self.texts[2], (255, 255, 255))
         button1_rect = pygame.Rect(width // 11.4, height // 1.26, width // 2.87, height // 11)
         button1_lineRect = pygame.Rect(width // 12.5, height // 1.27, width // 2.77, height // 10)
         self.addButton(button1_rect, (0, 0, 0), button1_text, button1_lineRect)
         # Drawing.
-        pygame.draw.rect(surface, (255, 255, 255), self.buttons[0]['lineRect'], 6)  # 6
-        pygame.draw.rect(surface, self.buttons[0]['color'], self.buttons[0]['rect'])
+        pygame.draw.rect(mainSurface, (255, 255, 255), self.buttons[0]['lineRect'], 6)  # 6
+        pygame.draw.rect(mainSurface, self.buttons[0]['color'], self.buttons[0]['rect'])
         self.showButton(self.buttons[0]['color'], self.buttons[0]['rect'], self.buttons[0]['lineRect'], button1_text,
                         (width // 7.58, height // 1.23))
         '''*****BUTTON2*****'''
         # Creating.
-        button2_text = self.createText(self.fontType, width // 25, self.texts[3], (255, 255, 255))
+        button2_text = Tools.createText(self.fontType, width // 25, self.texts[3], (255, 255, 255))
         button2_rect = pygame.Rect(width // 1.758, height // 1.26, width // 2.87, height // 11)
         button2_lineRect = pygame.Rect(width // 1.78, height // 1.27, width // 2.77, height // 10)
         self.addButton(button2_rect, (0, 0, 0), button2_text, button2_lineRect)
         # Drawing.
-        pygame.draw.rect(surface, self.buttons[1]['color'], self.buttons[1]['rect'])
-        pygame.draw.rect(surface, (255, 255, 255), self.buttons[1]['lineRect'], 6)
+        pygame.draw.rect(mainSurface, self.buttons[1]['color'], self.buttons[1]['rect'])
+        pygame.draw.rect(mainSurface, (255, 255, 255), self.buttons[1]['lineRect'], 6)
         self.showButton(self.buttons[1]['color'], self.buttons[1]['rect'], self.buttons[1]['lineRect'], button2_text,
                         (width // 1.44, height // 1.23))
 
@@ -396,7 +305,7 @@ class GameOver:
         -------
         None
         """
-        buttonText = self.createText(fontType, fontSize, text, textColor, smoothEdges, background)
+        buttonText = Tools.createText(fontType, fontSize, text, textColor, smoothEdges, background)
         self.updateButton(buttonColor, buttonText, buttonTextPos, rect)
 
     def mouse_onHover(self, mousePos):

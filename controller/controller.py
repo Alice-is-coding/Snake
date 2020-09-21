@@ -21,15 +21,16 @@ class Controller:
         Initialize the view (SnakeInterface) and the model (Snake and Snack).
         """
         # Init the game.
+        self.speed = 15
+        self.score = 0
+        self.bestScore = 0
         self.interface = SnakeInterface(WIDTH, WIDTH, BLOCKSIZE, self)
-        self.snake = Snake(self, 12, (48, 235, 106))
+        self.snake = Snake(self, (48, 235, 106))
         self.snakeBody = self.snake.getBody()
         self.snakeHead = self.snake.getHead()
         self.snack = Snack(self, (157, 125, 94))
         self.direction = None
         self.newDirection = None
-        self.score = 0
-        self.bestScore = 0
 
         self.snack.setPos()  # We ask a new position for the snack.
 
@@ -50,7 +51,7 @@ class Controller:
         # Will be used to store the previous direction in order for the snake to not be allowed to go back on himself.
         direction = self.getDirection()
         # Some useful snake attributes.
-        speed = self.snake.getSpeed()
+        speed = self.speed
         snakeColor = self.snake.getColor()
 
         while Flag:
@@ -103,6 +104,7 @@ class Controller:
                 if ateSnack:
                     # Creating a new body part for the snake.
                     self.snake.createBody(snakeColor, False, x, y)
+                    self.interface.updateScoreBanner(self.snake.getScore())
                     # Generating a new snack position.
                     self.snack.setPos()
             else:
@@ -178,6 +180,42 @@ class Controller:
         """
         return self.score
 
+    def getBestScore(self):
+        return self.bestScore
+
+    def getNewDirection(self):
+        """
+        New direction getter.
+
+        Returns
+        -------
+        pygame.key
+            The new direction taken.
+        """
+        return self.newDirection
+
+    def getDirection(self):
+        """
+        Direction getter.
+
+        Returns
+        -------
+        pygame.key
+            The direction taken (current one or old one).
+        """
+        return self.direction
+
+    def getBannerHeight(self):
+        """
+        Score banner height getter.
+
+        Returns
+        -------
+        int
+            The height of the score banner.
+        """
+        return self.interface.getBannerHeight()
+
     def setNewScore(self):
         """
         Score attribute setter.
@@ -203,28 +241,6 @@ class Controller:
         None
         """
         self.bestScore = bestScore
-
-    def getNewDirection(self):
-        """
-        New direction getter.
-
-        Returns
-        -------
-        pygame.key
-            The new direction taken.
-        """
-        return self.newDirection
-
-    def getDirection(self):
-        """
-        Direction getter.
-
-        Returns
-        -------
-        pygame.key
-            The direction taken (current one or old one).
-        """
-        return self.direction
 
     def compareSnackAndSnakePos(self):
         """
@@ -397,7 +413,7 @@ class Controller:
 
     def resetGame(self):
         """
-        Resets all the attributes of the Controller object, except the score attributes.
+        Resets all the attributes of the Controller object, except the bestScore attribute.
         Then it calls the main function in order to actually reset the game.
 
         Returns
@@ -406,11 +422,12 @@ class Controller:
         """
         # Reset attributes.
         self.interface = SnakeInterface(WIDTH, WIDTH, BLOCKSIZE, self)
-        self.snake = Snake(self, 11, (48, 235, 106))
+        self.snake = Snake(self, (48, 235, 106))
         self.snakeBody = self.snake.getBody()
         self.snakeHead = self.snake.getHead()
         self.snack = Snack(self, (157, 125, 94))
         self.snack.setPos()
+        self.score = 0
         self.direction = None
         self.newDirection = None
 
