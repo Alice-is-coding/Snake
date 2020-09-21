@@ -10,7 +10,7 @@ class Snake:
     Creates a snake (his head and each body part) and allows it to move.
     """
 
-    def __init__(self, controller, speed, color):
+    def __init__(self, controller, color):
         """
         Constructor.
 
@@ -18,14 +18,11 @@ class Snake:
         ----------
         controller : controller.controller.Controller
             The controller used for the game.
-        speed : int
-            The speed chosen.
         color : tuple of int
             The color of the snake.
         """
         self.controller = controller
         self.color = color
-        self.speed = speed
         # Creating the dictionary for the body and head.
         self.body = {}
         self.head = {}
@@ -115,17 +112,6 @@ class Snake:
             The color attribute of the Snake object.
         """
         return self.color
-
-    def getSpeed(self):
-        """
-        Speed getter.
-
-        Returns
-        -------
-        int
-            The speed attribute of the Snake object.
-        """
-        return self.speed
 
     def getScore(self):
         """
@@ -283,26 +269,27 @@ class Snake:
         None
         """
         # Declarations.
-        width = self.controller.getWidth()
-        height = self.controller.getHeight()
+        mainWidth = self.controller.getWidth()
+        mainHeight = self.controller.getHeight()
+        bannerHeight = self.controller.getBannerHeight()
 
         for key, value in self.head.items():
             if key == 'head':
                 rect = self.head[key]
                 self.controller.fillSurface((0, 0, 0), rect)
                 # Testing the next position of the head to manage the edges of the surface.
-                if rect.x + x > width:
+                if rect.x + x > mainWidth:
                     # We're reaching the right edge (we return to the left)
-                    rect.move_ip(- width, y)
+                    rect.move_ip(- mainWidth, y)
                 elif rect.x + x <= 0:
                     # We're reaching the left edge (we return to the right)
-                    rect.move_ip(width, y)
-                if rect.y + y > height:
+                    rect.move_ip(mainWidth, y)
+                if rect.y + y > mainHeight:
                     # We're reaching the lower edge (we return to the top)
-                    rect.move_ip(x, - height + y)
-                elif rect.y + y <= 0:
+                    rect.move_ip(x, (- mainHeight + bannerHeight) + y)
+                elif rect.y + y <= bannerHeight:
                     # We're reaching the upper edge (we return to the lower edge)
-                    rect.move_ip(x, height + y)
+                    rect.move_ip(x, (mainHeight - bannerHeight) + y)
                 else:
                     # We continue moving as expected
                     rect.move_ip(x, y)

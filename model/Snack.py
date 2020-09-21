@@ -75,15 +75,15 @@ class Snack:
         """
         # Declarations.
         width = self.controller.getWidth()
+        bannerHeight = self.controller.getBannerHeight()
         height = self.controller.getHeight()
         blockSize = self.controller.getBlockSize()
 
         # Generating a random x and y (pos).
         self.x = randrange(0, width, blockSize)  # Note : param randrange(begin, max, step)
-        self.y = randrange(0, height, blockSize)
+        self.y = randrange(bannerHeight, height, blockSize)
 
         # Creation of the container to be transferred to the view via the controller.
         rectObject = pygame.Rect(self.x + 1, self.y + 1, blockSize - 2, blockSize - 2)
         # Calls the controller to ask for the drawing of the rect visible on the interface given the pos and the color.
         self.controller.drawSnack(self.color, rectObject)
-
