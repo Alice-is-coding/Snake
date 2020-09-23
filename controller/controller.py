@@ -181,6 +181,14 @@ class Controller:
         return self.score
 
     def getBestScore(self):
+        """
+        BestScore getter.
+
+        Returns
+        -------
+        int
+            The bestScore attribute of the Controller object.
+        """
         return self.bestScore
 
     def getNewDirection(self):

@@ -101,7 +101,7 @@ class Tools:
         None
         """
         if center is True and rect is not None and posX is not None and posY is not None:
-            rect.center = (posX, posY)
+            rect.center = (int(posX), int(posY))
         if destination is not None:
             mainSurface.blit(text, destination)
         else:
