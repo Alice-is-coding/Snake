@@ -1,6 +1,7 @@
 import pygame
 from view.tools import Tools
 
+
 class GameOver:
     """
     Allows the creation of a Snake's game over view displayed to the user.
@@ -166,8 +167,8 @@ class GameOver:
 
             # Showing some info : "Game Over" ; "Score" ; 2 buttons ("Play Again" ; "Quit").
             """*****GAME OVER*****"""
-            Tools.createMessage(self.snakeInterface.getSurface(), self.fontType, width // 10, self.texts[0],
-                                (251, 244, 5), width // 2, height // 3,
+            Tools.createMessage(self.snakeInterface.getSurface(), self.fontType, int(width // 10), self.texts[0],
+                                (251, 244, 5), int(width // 2), int(height // 3),
                                 (0, 0, 0), True)
             """*****SCORE*****"""
             self.createScoreMessage(width, height, score, bestScore)
@@ -226,13 +227,13 @@ class GameOver:
         if bestScore is not None:
             # We congratulate the user.
             Tools.createMessage(mainSurface, self.fontType, int(width // 16.6), self.texts[4], (252, 178, 5),
-                                width // 2, height // 1.9, (0, 0, 0), True)
+                                int(width // 2), int(height // 1.9), (0, 0, 0), True)
             Tools.createMessage(mainSurface, self.fontType, int(width // 16.6), self.texts[5] + str(score),
-                                (252, 178, 5), width // 2, height // 1.7, (0, 0, 0), True)
+                                (252, 178, 5), int(width // 2), int(height // 1.7), (0, 0, 0), True)
         else:
             # Otherwise, we only show the current score.
             Tools.createMessage(mainSurface, self.fontType, int(width // 12.5), self.texts[1] + str(score),
-                                (252, 178, 5), width // 2, height // 1.8, (0, 0, 0), True)
+                                (252, 178, 5), int(width // 2), int(height // 1.8), (0, 0, 0), True)
 
     def createGameOverButtons(self, width, height):
         """
@@ -254,26 +255,26 @@ class GameOver:
 
         '''*****BUTTON1*****'''
         # Creating.
-        button1_text = Tools.createText(self.fontType, width // 25, self.texts[2], (255, 255, 255))
-        button1_rect = pygame.Rect(width // 11.4, height // 1.26, width // 2.87, height // 11)
-        button1_lineRect = pygame.Rect(width // 12.5, height // 1.27, width // 2.77, height // 10)
+        button1_text = Tools.createText(self.fontType, int(width // 25), self.texts[2], (255, 255, 255))
+        button1_rect = pygame.Rect(int(width // 11.4), int(height // 1.26), int(width // 2.87), int(height // 11))
+        button1_lineRect = pygame.Rect(int(width // 12.5), int(height // 1.27), int(width // 2.77), int(height // 10))
         self.addButton(button1_rect, (0, 0, 0), button1_text, button1_lineRect)
         # Drawing.
         pygame.draw.rect(mainSurface, (255, 255, 255), self.buttons[0]['lineRect'], 6)  # 6
         pygame.draw.rect(mainSurface, self.buttons[0]['color'], self.buttons[0]['rect'])
         self.showButton(self.buttons[0]['color'], self.buttons[0]['rect'], self.buttons[0]['lineRect'], button1_text,
-                        (width // 7.58, height // 1.23))
+                        (int(width // 7.58), int(height // 1.23)))
         '''*****BUTTON2*****'''
         # Creating.
-        button2_text = Tools.createText(self.fontType, width // 25, self.texts[3], (255, 255, 255))
-        button2_rect = pygame.Rect(width // 1.758, height // 1.26, width // 2.87, height // 11)
-        button2_lineRect = pygame.Rect(width // 1.78, height // 1.27, width // 2.77, height // 10)
+        button2_text = Tools.createText(self.fontType, int(width // 25), self.texts[3], (255, 255, 255))
+        button2_rect = pygame.Rect(int(width // 1.758), int(height // 1.26), int(width // 2.87), int(height // 11))
+        button2_lineRect = pygame.Rect(int(width // 1.78), int(height // 1.27), int(width // 2.77), int(height // 10))
         self.addButton(button2_rect, (0, 0, 0), button2_text, button2_lineRect)
         # Drawing.
         pygame.draw.rect(mainSurface, self.buttons[1]['color'], self.buttons[1]['rect'])
         pygame.draw.rect(mainSurface, (255, 255, 255), self.buttons[1]['lineRect'], 6)
         self.showButton(self.buttons[1]['color'], self.buttons[1]['rect'], self.buttons[1]['lineRect'], button2_text,
-                        (width // 1.44, height // 1.23))
+                        (int(width // 1.44), int(height // 1.23)))
 
     def changeButtonStyle(self, fontType, fontSize, text, textColor, buttonColor, buttonTextPos, rect,
                           smoothEdges=False, background=None):
