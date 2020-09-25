@@ -21,7 +21,7 @@ class Controller:
         Initialize the view (SnakeInterface) and the model (Snake and Snack).
         """
         # Init the game.
-        self.speed = 15
+        self.speed = 14
         self.score = 0
         self.bestScore = 0
         self.interface = SnakeInterface(WIDTH, WIDTH, BLOCKSIZE, self)

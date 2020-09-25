@@ -165,7 +165,7 @@ class Snake:
         blockSize = self.controller.getBlockSize()
         width = self.controller.getWidth()
         height = self.controller.getHeight()
-        # rectObject = None
+        scoreBannerHeight = self.controller.getBannerHeight()
 
         # If it is the head to be created & stored :
         if isHead:
@@ -174,7 +174,7 @@ class Snake:
                           blockSize)
             # NB: param randrange(begin, max, step)
             # (we go blockSize by blockSize so that the square will always be visible in a grid' square).
-            y = randrange(0, height, blockSize)
+            y = randrange(scoreBannerHeight, height, blockSize)
             # Creating the head and the eyes, then add it to the head dict.
             rectObject = pygame.Rect(x + 1, y + 1, blockSize - 2, blockSize - 2)
             eye1 = pygame.Rect(int(x + (blockSize // 1.4)), int(y + (blockSize // 2)), blockSize // 10, blockSize // 10)
@@ -193,36 +193,6 @@ class Snake:
             # We add the Rect to the body.
             self.addBodyPart(self.countBody, rectObject)
             self.countBody += 1
-
-        # Call the controller to ask for the creation of a square visible on the interface given the position,
-        # the color and if it's the head of the body or not.
-        self.drawBody(color, rectObject, isHead)
-
-    def drawBody(self, color, rect, isHead=False):
-        """
-        Draw the body part (or the head) passed in arg.
-
-        Parameters
-        ----------
-        color : tuple of int
-            Color to be drawn.
-        rect : pygame.Rect
-            The body part (or the head) which is to be drawn.
-        isHead : bool, optional
-            If True, the Rect object is the head, and the head is to be drawn.
-
-        Returns
-        -------
-        None
-        """
-        if isHead:
-            # Browsing the head dict attribute.
-            for key, value in self.head.items():
-                if key != 'head':
-                    eye = self.head[key]
-                    self.controller.drawCircle(eye.x, eye.y, (0, 0, 0))
-        else:
-            self.controller.drawRect(color, rect)
 
     def move(self, x, y, color, direction=None):
         """
